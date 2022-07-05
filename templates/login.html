@@ -3,20 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
+    <meta value="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@5.8.55/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
+    <script src="https://unpkg.com/vue-multiselect@2.1.0"></script>
+    <link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
-    <h1>Login page</h1>
-    <div id="vm">
-        <form>
-            <input v-model="email" type="email" placeholder="email"> <br>
-            <input v-model="password" type="password" placeholder="password"><br>
-            <button v-on:click="logToConsole()">Login</button>
-        </form>
-        <a href="/">Register</a>
+    <div id="vm" class="container">
+        {% include 'dynamic_html/navbar.html' %}
+                <section>
+                    <div class="notification">
+                        <h1><strong>User Log In Form</strong></h1><br>
+                        {{error_message}}
+                <form method="post">
+                    <b-field label="Account Type ">
+                        <b-dropdown v-model="user_data.account_type" aria-role="list">
+                            <template v-if="user_data.account_type === author" #trigger>
+                                <b-button
+                                    label="Author"
+                                    type="is-primary"
+                                    icon-left="pencil-outline"
+                                    icon-right="menu-down" />
+                            </template>
+                            <template v-else #trigger>
+                                <b-button
+                                    label="Reviewer"
+                                    type="is-primary"
+                                    icon-left="account-multiple"
+                                    icon-right="menu-down" />
+                            </template>
+                            <b-dropdown-item :value="author" aria-role="listitem">
+                                <div class="media">
+                                    <b-icon class="media-left" icon="pencil-outline"></b-icon>
+                                    <div class="media-content">
+                                        <h3>Author</h3>
+                                        <small>Author Publishes Papers</small>
+                                    </div>
+                                </div>
+                            </b-dropdown-item>
+                            <b-dropdown-item :value="reviewer" aria-role="listitem">
+                                <div class="media">
+                                    <b-icon class="media-left" icon="account-multiple"></b-icon>
+                                    <div class="media-content">
+                                        <h3>Reviewer</h3>
+                                        <small>Reviewers Grade Papers</small>
+                                    </div>
+                                </div>
+                            </b-dropdown-item>
+                        </b-dropdown>
+                    </b-field>
+                    <b-field label="Email">
+                        <b-input 
+                            type="email" 
+                            name="email" 
+                            v-model="user_data.email_address"
+                            required
+                            >
+                    </b-field>
+                    <b-field label="Password">
+                        <b-input 
+                            type="password" 
+                            v-model="user_data.password" 
+                            name="password"
+                            required
+                            >
+                    </b-field>
+                    <b-field>
+                    <div class="buttons">
+                        <b-button v-on:click="logIn()" 
+                            type="is-primary" 
+                            expanded>
+                            Sign In
+                        </b-button>
+                    </div>
+                    </b-field>
+            </form>
+        </div>
+            </section>
+            <br><br>
     </div>
+    <script src="https://unpkg.com/vue@2"></script>
+    <!-- Full bundle -->
+    <script src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
+    <script>
+        const vm = new Vue({
+            el: '#vm',
+            delimiters: ['[[', ']]'],
+            data: {
+                user_data:{
+                    account_type: 'reviewer',
+                    email_address: '',
+                    password: '',
+                },
+                author: 'author',
+                reviewer: 'reviewer'
+            },
+            methods:{
+                logIn() {
+                    console.log(this.user_data);
+                    axios.post('http://127.0.0.1:5000/login', this.user_data).then(() =>{
+                        window.location.reload();
+                    }).catch((err)=>  {
+                        this.$buefy.toast.open({
+                            duration: 5000,
+                            message: `Error: ${err}`,
+                            type: 'is-danger',
+                            pauseOnHover: true
+                        });
+                    });
+                }
+            }
+        })
+    </script> 
 </body>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="{{ url_for('static', filename='login.js') }}"></script>
 </html>

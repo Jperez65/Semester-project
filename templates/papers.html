@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta value="viewport" content="width=device-width, initial-scale=1.0">
+        <title>User Profile</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@5.8.55/css/materialdesignicons.min.css">
+        <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
+        <script src="https://unpkg.com/vue-multiselect@2.1.0"></script>
+        <link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    </head>
+    <title>Graded Papers</title>
+</head>
+<body>
+    <div id="vm">
+        <div class="container">
+            {% include 'dynamic_html/navbar.html' %}
+        </div>
+        <div class="container">
+            <h1><strong> Graded Papers</strong></h1>
+            <div class="control">
+                <!-- <div class="notification">
+                    <div class="content">
+                        <pre >[[ selected ]]</pre>
+                    </div>
+                </div> -->
+                <b-table
+                    :data="graded_papers" 
+                    :columns="columns"
+                    :selected.sync="selected"
+                    @dblclick = "showReview(selected)"
+                    :key="control"
+                    :width="100"
+                    focusable
+                ></b-table>
+            </div>
+        </div>
+        <b-modal
+            v-model="isComponentModalActive"
+            has-modal-card
+            :can-cancel="false"
+            full-screen
+            >
+        <modal-form v-bind="formProps"></modal-form>
+    </b-modal>
+    </div>
+    <script src="https://unpkg.com/vue@2"></script>
+    <!-- Full bundle -->
+    <script src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
+    
+    <script>
+
+const ModalForm = {
+        props: [
+            'email', 'password'
+        ],
+        template: `
+            <div class="modal-card" style="width: auto">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Paper Grades</p>
+                </header>
+                <section class="modal-card-body">
+                    <div class="notification">
+                        <b-field label="Appropiateness Of Topic">
+                            <b-input
+                                readonly=true
+                                type="text"
+                                value="text"
+                                >
+                            </b-input>
+                        </b-field>
+
+                        <b-field label="Timeliness Of Topic">
+                            <b-input
+                                readonly=true
+                                type="text"
+                                value="text"
+                            >
+                            </b-input>
+                        </b-field>
+
+                        <b-field label="Supportive Evidence">
+                            <b-input
+                                readonly=true
+                                type="text"
+                                value="text"
+                            >
+                            </b-input>
+                        </b-field>
+
+                        <b-field label="Technical Quality">
+                            <b-input
+                                readonly=true
+                                type="text"
+                                value="text"
+                            >
+                            </b-input>
+                        </b-field>
+
+                        <b-field label="Scope Of Coverage">
+                            <b-input
+                                readonly=true
+                                type="text"
+                                value="text"
+                            >
+                            </b-input>
+                        </b-field>
+
+                        <b-field label="Citation Of Previous Work">
+                            <b-input
+                                readonly=true
+                                type="text"
+                                value="text"
+                            >
+                            </b-input>
+                        </b-field>
+
+                        <b-field label="Originality">
+                            <b-input
+                                readonly=true
+                                type="text"
+                                value="text"
+                            >
+                            </b-input>
+                        </b-field>
+
+                        <b-field label="Organization Of Paper">
+                            <b-input
+                                readonly=true
+                                type="text"
+                                value="text"
+                            >
+                            </b-input>
+                        </b-field>
+
+                        <b-field label="Clarity Of Main Message">
+                            <b-input
+                                readonly=true
+                                type="text"
+                                value="text"
+                            >
+                            </b-input>
+                        </b-field>
+
+                        <b-field label="Mechanics">
+                            <b-input
+                                readonly=true
+                                type="text"
+                                value="text"
+                            >
+                            </b-input>
+                        </b-field>
+
+                        <b-field label="Suitability For Presentation">
+                            <b-input
+                                readonly=true
+                                type="text"
+                                value="text"
+                            >
+                            </b-input>
+                        </b-field>
+
+                        <b-field label="Potential Interestin Topic">
+                            <b-input
+                                readonly=true
+                                type="text"
+                                value="text"
+                            >
+                            </b-input>
+                        </b-field>
+
+                        <b-field label="Overall Rating">
+                            <b-input
+                                readonly=true
+                                type="text"
+                                value="text"
+                            >
+                            </b-input>
+                        </b-field>
+
+                        <b-field label="Comfort Level Topic">
+                            <b-input
+                                readonly=true
+                                type="text"
+                                value="text"
+                            >
+                            </b-input>
+                        </b-field>
+
+                        <b-field label="Comfort Level Acceptability">
+                            <b-input
+                                readonly=true
+                                type="text"
+                                value="text"
+                            >
+                            </b-input>
+                        </b-field>
+
+                        <b-field label="Content Comments">
+                            <b-input
+                                readonly=true
+                                type="text"
+                                value="text"
+                            >
+                            </b-input>
+                        </b-field>
+
+                        <b-field label="Written Document Comments">
+                            <b-input
+                                readonly=true
+                                type="text"
+                                value="text"
+                            >
+                            </b-input>
+                        </b-field>
+
+                        <b-field label="Potential For Oral Presentation Comments">
+                            <b-input
+                                readonly=true
+                                type="text"
+                                value="text"
+                                readonly=true
+                            >
+                            </b-input>
+                        </b-field>
+
+                    
+                        <b-field label="Overall Rating Comments">
+                            <b-input
+                                readonly=true
+                                type="text"
+                                value="text"
+                                readonly=true
+                            >
+                            </b-input>
+                        </b-field>
+                    </div>
+
+                </section>
+                <footer class="modal-card-foot">
+                    <b-button
+                        label="Close"
+                        type="is-primary"
+                        @click="$parent.close()" />
+                </footer>
+            </div>
+        `
+    }
+
+
+        const vm = new Vue({
+            el: '#vm',
+            delimiters: ['[[', ']]'],
+            components: { 
+                Multiselect: window.VueMultiselect.default,
+                ModalForm
+            },
+            data: {
+                review:{
+                    content_comments: '',
+                    written_document_comments: '',
+                    potential_for_oral_presentation_comments: '',
+                    overall_rating_comments: '',
+                    paper_id: null,
+                },
+                topics: [],
+                isComponentModalActive: false,
+                formProps: {
+                    email: 'evan@you.com',
+                    password: 'testing'
+                },
+                options: [],
+                graded_papers: [
+                    // below line is jinja python code that makes javascript code 
+                    {% for paper in graded_papers %}
+                        {
+                            paper_id: '{{ paper.paper_id }}', 
+                            title: '{{ paper.title }}',
+                            author_id: '{{ paper.author_id }}',
+                            file_name: '{{ paper.file_name }}',
+                            active: '{{ paper.active }}',
+                            file_name_original: '{{ paper.file_name_original }}'
+                        },
+                    {% endfor %}
+                ],
+                control:0,
+                selected: null,
+                columns: [
+                    {% for i in range(0,6) %}
+                    {
+                        field: '{{ paper_attributes[i].column_name }}',
+                        label: '{{ paper_attributes[i].column_name.replace("_", " ").title() }}',
+                        searchable: true,
+                    },
+                    {% endfor %}
+                ],
+                graded_papaers: [
+                {% for attr in rating_attributes %}
+                    {% for grade in graded_papers %}
+                    {
+                        {{ attr.column_name }}: {{grade}}.{{ attr.column_name }}
+                    },
+                    {% endfor %}
+                {% endfor %}
+                    ]
+            },
+            methods:{
+               showReview(selected) {
+                // alert("A Row was double clicked" + JSON.stringify(selected));
+                this.isComponentModalActive = true;
+               } 
+            },
+        })
+    </script> 
+</body>
+</html>

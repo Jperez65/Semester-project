@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reviewer Portal</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@5.8.55/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
+    <script src="https://unpkg.com/vue-multiselect@2.1.0"></script>
+    <link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div id="vm">
+        <div class="container">
+            {% include 'dynamic_html/navbar.html' %}
+        </div>
+        <div class="container">
+            <h1><strong> Papers Pending Review</strong></h1>
+        <b-table
+            :data="pending_papers"
+            :columns="columns"
+            :selected.sync="selected"
+            :key="control"
+            focusable
+        >
+        </b-table>
+        <hr/>
+        <div class="notification">
+            <div class="content">
+                <pre>[[ selected ]]</pre>
+            </div>
+        </div>
+        <hr/>
+            <div class="notification" v-if="selected !== null">
+                <div class="content">
+                    <h3>Submit Review Form</h3>
+                    <form method="post">
+                        <template>
+                            <section>
+                                {% for attr in rating_attributes %}
+                                    <input type="text" 
+                                        name="review.{{ attr.column_name }}" 
+                                        v-model="review.{{ attr.column_name }}" 
+                                        value="review.{{ attr.column_name }}"
+                                    >
+                                    <b-field label="{{ attr.column_name.replace("_", " ").title() }}">
+                                        <b-slider 
+                                            v-model="review.{{ attr.column_name }}" 
+                                            name="review.{{ attr.column_name }}" 
+                                            :type="{{attr.column_name}}_sliderType" 
+                                            :tooltip-type="{{attr.column_name}}_sliderType" 
+                                            :min="0" 
+                                            :max="10" 
+                                            ticks
+                                            >
+                                        </b-slider>
+                                    </b-field>
+                                {% endfor %}
+                                <b-field>
+                                    <b-input type="textarea"
+                                        name="content_comments"
+                                        required
+                                        placeholder="Content Comments"
+                                        v-model="review.content_comments"
+                                        >
+                                    </b-input>
+                                </b-field>
+
+                                <b-field>
+                                    <b-input type="textarea"
+                                        name="written_document_commnets"
+                                        required
+                                        placeholder="Written Document Comments"
+                                        v-model="review.written_document_comments"
+                                        >
+                                    </b-input>
+                                </b-field>
+
+                                <b-field>
+                                    <b-input type="textarea"
+                                        name="potential_for_oral_presentation_comments"
+                                        required
+                                        placeholder="Potential For Oral Presentation Comments"
+                                        placeholder="potential_for_oral_presentation_comments"
+                                        v-model="review.potential_for_oral_presentation_comments"
+                                        >
+                                    </b-input>
+                                </b-field>
+
+                                <b-field>
+                                    <b-input type="textarea"
+                                        name="overall_rating_comments"
+                                        required
+                                        placeholder="Overall Rating Comments"
+                                        v-model="review.overall_rating_comments"
+                                        >
+                                    </b-input>
+                                </b-field>
+                                <b-field>
+                                    <b-button v-on:click="submit()"type="is-primary" expanded>Submit Review</b-button><br><br>
+                                </b-field>
+                            </section>
+                        </template>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://unpkg.com/vue@2"></script>
+    <!-- Full bundle -->
+    <script src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
+    <script>
+        const vm = new Vue({
+            el: '#vm',
+            delimiters: ['[[', ']]'],
+            components: { Multiselect: window.VueMultiselect.default },
+            computed:{
+                {% for attr in rating_attributes %}
+                {{attr.column_name}}_sliderType() {
+                    if (this.review.{{ attr.column_name }} > 4 && this.review.{{ attr.column_name }} <=7){
+                        return "is-warning";
+                    } else if (this.review.{{ attr.column_name }} > 7){
+                        return "is-success";
+                    }
+                    return "is-danger";    
+                },
+                {% endfor %}
+            },
+            data: {
+                review:{
+                    {% for attr in rating_attributes %}
+                        {{ attr.column_name }}: 0,
+                    {% endfor %}
+                    content_comments: '',
+                    written_document_comments: '',
+                    potential_for_oral_presentation_comments: '',
+                    overall_rating_comments: '',
+                    paper_id: null,
+                },
+                topics: [],
+                options: [],
+                pending_papers: [
+                    {% for paper in pending_papers %}
+                        {
+                            id: '{{ paper.paper_id }}', 
+                            title: '{{ paper.title }}',
+                            author: '{{ paper.author_id }}',
+                            file_name: '{{ paper.file_name }}',
+                        },
+                    {% endfor %}
+                ],
+                control:0,
+                selected: null,
+                columns: [
+                    {
+                        field: 'id',
+                        label: 'Paper ID',
+                        searchable: true,
+                    },
+                    {
+                        field: 'title',
+                        label: 'Title',
+                        searchable: true,
+                    },
+                    {
+                        field: 'author',
+                        label: 'Author',
+                        searchable: true,
+                    },
+                    {
+                        field: 'file_name',
+                        label: 'File Name',
+                        searchable: true,
+                    },
+                    {
+                        field: 'title',
+                        label: 'Title',
+                        searchable: true,
+                    }
+                ],
+            },
+            methods:{
+                submit() {
+                    {% for attr in rating_attributes %}
+                        if (!Number.isInteger(this.review.{{ attr.column_name }})) {
+                            this.review.{{ attr.column_name }} = Math.round(this.review.{{ attr.column_name }});
+                        }
+                        if (this.review.{{ attr.column_name }}> 10){
+                            this.review.{{ attr.column_name }} = 10;
+                        }
+                        if (this.review.{{ attr.column_name }}< 0){
+                            this.review.{{ attr.column_name }} = 0;
+                        }
+                    {% endfor %}
+                    this.review.paper_id = this.selected.id;
+                    console.log(this.review);
+                    axios.post('http://127.0.0.1:5000/reviewer', this.review).then(() => {
+                        window.location.reload()
+                        this.$buefy.toast.open({
+                            duration: 5000,
+                            message: `Review Submitted!`,
+                            type: 'is-success',
+                            pauseOnHover: false
+                        });
+                    }).catch((err)=>  {
+                        this.$buefy.toast.open({
+                            duration: 5000,
+                            message: `Error: ${err}`,
+                            type: 'is-danger',
+                            pauseOnHover: true
+                        });
+                    });
+                },
+            }
+        })
+    </script> 
+</body>
+</html>

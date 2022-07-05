@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta value="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@5.8.55/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
+    <script src="https://unpkg.com/vue-multiselect@2.1.0"></script>
+    <link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div id="vm" class="container">
+        {% include 'dynamic_html/navbar.html' %}
+                <section>
+                    <div class="notification">
+                    <h1><strong>{{ user[1] }}'s Profile</strong></h1><br>
+                <form method="post">
+                    <b-field label="First Name">
+                        <b-input 
+                            type="text" 
+                            v-model="profile_data.first_name" 
+                            name="first_name"
+                        >
+                    </b-field>
+                    <b-field label="Middle Initial">
+                        <b-input 
+                            type="text" 
+                            v-model="profile_data.middle_initial" 
+                            name="middle_initial"
+                        >
+                    </b-field>
+                    <b-field label="Last Name">
+                        <b-input 
+                            type="text" 
+                            v-model="profile_data.last_name" 
+                            name="last_name"
+                        >
+                    </b-field>
+                    <b-field label="Affiliation">
+                        <b-input 
+                            type="text" 
+                            v-model ="profile_data.affiliation" 
+                            name="affiliation"
+                        >
+                    </b-field>
+                    <b-field label="Department">
+                        <b-input 
+                            type="text" 
+                            v-model="profile_data.department" 
+                            name="department"
+                        >
+                    </b-field>
+                    <b-field label="Address">
+                        <b-input 
+                            type="text" 
+                            v-model="profile_data.address" 
+                            name="address"
+                        >
+                    </b-field>
+                    <b-field label="City">
+                        <b-input 
+                            type="text" 
+                            v-model="profile_data.city" 
+                            name="city"
+                        >
+                    </b-field>
+                    <b-field label="State">
+                        <b-input 
+                            type="text" 
+                            v-model="profile_data.state" 
+                            name="state"
+                        >
+                    </b-field>
+                    <b-field label="Zip Code">
+                        <b-input 
+                            type="text" 
+                            v-model="profile_data.zip_code" 
+                            name="zip_code"
+                        >
+                    </b-field>
+                    <b-field label="Phone Number ">
+                        <b-input 
+                            type="text" 
+                            v-model="profile_data.phone_number" 
+                            name="phone_number"
+                        >
+                    </b-field>
+                    <b-field>
+                        <b-button 
+                            v-on:click="update()"
+                            type="is-primary" 
+                            expanded
+                        >
+                        Update Profile
+                    </b-button>
+                    </b-field>
+            </form>
+        </div>
+                </section>
+            <br><br>
+    </div>
+    <script src="https://unpkg.com/vue@2"></script>
+    <!-- Full bundle -->
+    <script src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
+    <script>
+        const vm = new Vue({
+            el: '#vm',
+            delimiters: ['[[', ']]'],
+            data: {
+                profile_data: {
+                    first_name: '{{ user[1] }}',
+                    last_name: '{{ user[3] }}',
+                    middle_initial: '{{ user[2] }}',
+                    affiliation: '{{ user[4] }}',
+                    department: '{{ user[5] }}',
+                    address: '{{ user[6] }}',
+                    city: '{{ user[7] }}',
+                    state: '{{ user[8] }}',
+                    zip_code: '{{ user[9] }}',
+                    phone_number: '{{ user[10] }}',
+                    // password: '',
+                }
+            },
+            methods: {
+                update() {
+                    axios.post('http://127.0.0.1:5000/profile', this.profile_data).then(() =>{
+                        this.$buefy.toast.open({
+                            duration: 5000,
+                            message: `Profile Updated Successfully`,
+                            type: 'is-success',
+                            pauseOnHover: false
+                        });
+                    }).catch((err)=>  {
+                        this.$buefy.toast.open({
+                            duration: 5000,
+                            message: `Error: ${err}`,
+                            type: 'is-danger',
+                            pauseOnHover: true
+                        });
+                    });
+                },
+            }
+        })
+    </script> 
+</body>
+</html>
