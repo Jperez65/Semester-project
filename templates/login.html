@@ -23,7 +23,7 @@
                         <b-dropdown v-model="user_data.account_type" aria-role="list">
                             <template v-if="user_data.account_type === author" #trigger>
                                 <b-button
-                                    label="Author"
+                                    label="Author"    
                                     type="is-primary"
                                     icon-left="pencil-outline"
                                     icon-right="menu-down" />
@@ -34,6 +34,13 @@
                                     type="is-primary"
                                     icon-left="account-multiple"
                                     icon-right="menu-down" />
+                            </template>
+                            <template v-else #trigger>
+                                <b-button
+                                    label="Admin"
+                                    type="is-primary"
+                                    icon-left="account-multiple" 
+                                    icon-right="menu-down" />   <!-- can add something different for admin -->
                             </template>
                             <b-dropdown-item :value="author" aria-role="listitem">
                                 <div class="media">
@@ -53,7 +60,18 @@
                                     </div>
                                 </div>
                             </b-dropdown-item>
+                            <b-dropdown-item :value="Admin" aria-role="listitem">
+                                <div class="media">
+                                    <b-icon class="media-left" icon="account-multiple"></b-icon>
+                                    <div class="media-content">
+                                        <h3>Admin</h3>
+                                        <small>Admin manages the website</small>
+                                    </div>
+                                </div>
+                            </b-dropdown-item>
+
                         </b-dropdown>
+                    </b-dropdown>
                     </b-field>
                     <b-field label="Email">
                         <b-input 
