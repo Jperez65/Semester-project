@@ -326,5 +326,5 @@ def paper():
 
 if __name__=='__main__': #calling  main 
     app.debug=True #setting the debugging option for the application instance
-    app.run() #launching the flask's integrated development webserver
+    app.run(debug=True) #launching the flask's integrated development webserver
     
