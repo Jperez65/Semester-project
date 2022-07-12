@@ -61,21 +61,14 @@ def login():
             else:   
                 return redirect('/reviewer')
         
-        elif login_as == 'admin' and password == '123':
-            render_template('admin.html')
-
         elif login_as == 'admin':
-            #hardcode username and ps 
-            #adminEmail = "admin@a.com"
-            #adminPs = "admin"
-
-            #session['id'] = "admin"
-            #session['account_type'] = login_as
-
-            #check if the user name authenticathe hard coded
-            print("before jumping to the admin route" + session.get("account_type") + " Log in as " + login_as)
-            print('here')
-            return render_template('administrator.html')
+            # hardcode username and ps 
+            adminEmail = "admin@a.com"
+            adminPs = "admin"
+            print("log in as admin")
+            print("redirecting to admin route")
+            return redirect('/admin')
+            #return render_template('admin.html')
 
 
 
@@ -277,10 +270,10 @@ def reviewer():
 
 @app.route("/admin", methods= ['POST', 'GET'] )
 def admin():
+    #in the route we render the template of the page
+    print("Rendering admin")
     return render_template('admin.html')
-    # if session.get("account_type") != "admin":
-    #     return redirect("/login")
-    # else:
+
 
 @app.route('/profile',methods=['POST', 'GET'])
 def profile():

@@ -2,17 +2,29 @@
 <html lang="en"></html>
 <html>
 <head>
-  <meta charset="UTF-8">
+  <!-- <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@5.8.55/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css"> -->
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Author Portal</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@5.8.55/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
+
+  <script src="https://unpkg.com/vue-multiselect@2.1.0"></script>
+  <link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">
+  <link rel="shortcut icon" href="#">
+
   <title>Admin</title>
 </head>
 
 <body>
   <div id="vm" class="container">
-      {% include 'dynamic_html/navbar.html' %}
+      <!--{% include 'dynamic_html/navbar.html' %} -->
       <template>
         <div class="p-5 text-center bg-light">
           <h1 class="mb-3">Maintenance Table</h1>
@@ -196,14 +208,22 @@
   <script src="https://unpkg.com/vue@2"></script>
   <!-- Full bundle -->
   <script src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
+
+
+  <script src="https://unpkg.com/vue@2"></script>
+  <!-- Full bundle -->
+  <script src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
   <script>
       const vm = new Vue({
           el: '#vm',
           delimiters: ['[[', ']]'],
           components: { Multiselect: window.VueMultiselect.default },
           data: {
+            
           }
       })
+
+      console.log("Admin Redered")
   </script>
 </body>
 
