@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta value="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@5.8.55/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
+    <script src="https://unpkg.com/vue-multiselect@2.1.0"></script>
+    <link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div id="vm" class="container">
+        {% include 'dynamic_html/navbar.html' %}
+                <section>
+                    <div class="notification">
+                    <h1><strong>User Registration Form</strong></h1><br>
+                <form method="post">
+                    <b-field label="First Name">
+                        <b-input 
+                            type="text"  
+                            name="first_name"
+                            v-model="user_data.first_name"
+                            required
+                        >
+                    </b-field>
+                    <b-field label="Middle Initial">
+                        <b-input 
+                            type="text" 
+                            name="middle_initial"
+                            v-model="user_data.middle_initial"
+                            maxlength="1"
+                            required
+                        >
+                    </b-field>
+                    <b-field label="Last Name">
+                        <b-input 
+                            type="text" 
+                            name="last_name"
+                            v-model="user_data.last_name"
+                            required
+                        >
+                    </b-field>
+                    <b-field label="Email Address">
+                        <b-input 
+                            type="text"  
+                            name="email_address"
+                            v-model="user_data.email_address"
+                            required
+                        >
+                    </b-field>
+                    <b-field label="Affiliation">
+                        <b-input 
+                            type="text" 
+                            name="affiliation"
+                            v-model="user_data.affiliation"
+                            required
+                        >
+                    </b-field>
+                    <b-field label="Department">
+                        <b-input 
+                            type="text"
+                            name="department"
+                            v-model="user_data.department"
+                            required
+                        >
+                    </b-field>
+                    <b-field label="Address">
+                        <b-input 
+                            type="text" 
+                            name="address"
+                            v-model="user_data.address"
+                            required
+                        >
+                    </b-field>
+                    <b-field label="City">
+                        <b-input 
+                            type="text"  
+                            name="city"
+                            v-model="user_data.city"
+                            required
+                        >
+                    </b-field>
+                    <b-field label="State">
+                        <b-input 
+                            type="text"  
+                            name="state"
+                            v-model="user_data.state"
+                            maxlength="2"
+                            required
+                        >
+                    </b-field>
+                    <b-field label="Zip Code">
+                        <b-input 
+                            type="text"  
+                            name="zip_code"
+                            v-model="user_data.zip_code"
+                            required
+                        >
+                    </b-field>
+                    <b-field label="Phone Number ">
+                        <b-input 
+                            type="text"  
+                            name="phone_number"
+                            v-model="user_data.phone_number"
+                            required
+                        >
+                    </b-field>
+                    <b-field label="Account Type ">
+                        <b-dropdown v-model="user_data.account_type" aria-role="list">
+                            <template v-if="user_data.account_type === author" #trigger>
+                                <b-button
+                                    label="Author"
+                                    type="is-primary"
+                                    icon-left="pencil-outline"
+                                    icon-right="menu-down" />
+                            </template>
+                            <template v-else #trigger>
+                                <b-button
+                                    label="Reviewer"
+                                    type="is-primary"
+                                    icon-left="account-multiple"
+                                    icon-right="menu-down" />
+                            </template>
+                            <b-dropdown-item :value="author" aria-role="listitem">
+                                <div class="media">
+                                    <b-icon class="media-left" icon="pencil-outline"></b-icon>
+                                    <div class="media-content">
+                                        <h3>Author</h3>
+                                        <small>Author Publishes Papers</small>
+                                    </div>
+                                </div>
+                            </b-dropdown-item>
+                            <b-dropdown-item :value="reviewer" aria-role="listitem">
+                                <div class="media">
+                                    <b-icon class="media-left" icon="account-multiple"></b-icon>
+                                    <div class="media-content">
+                                        <h3>Reviewer</h3>
+                                        <small>Reviewers Grade Papers</small>
+                                    </div>
+                                </div>
+                            </b-dropdown-item>
+                        </b-dropdown>
+                    </b-field>
+                    <b-field label="Password ">
+                        <b-input 
+                            type="password"  
+                            name="password"
+                            v-model="user_data.password"
+                            maxlength="5"
+                            required
+                        >
+                    </b-field>
+                    <b-field label="Verify Password">
+                        <b-input 
+                            type="password"  
+                            name="verify_password"
+                            v-model="user_data.verify_password"
+                            maxlength="5"
+                            required
+                        >
+                    </b-field>
+                    <b-field>
+                        <b-button v-on:click="register()" type="is-primary" expanded>Register</b-button>
+                    </b-field>
+            </form>
+        </div>
+                </section>
+            <br><br>
+    </div>
+    <script src="https://unpkg.com/vue@2"></script>
+    <!-- Full bundle -->
+    <script src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
+    <script>
+        const vm = new Vue({
+            el: '#vm',
+            delimiters: ['[[', ']]'],
+            data: {
+                user_data: {
+                    first_name:'',
+                    middle_initial:'',
+                    last_name: '',
+                    affiliation: '',
+                    department: '',
+                    address: '',
+                    city: '',
+                    state: '',
+                    zip_code: '',
+                    phone_number: '',
+                    account_type:'reviewer',
+                    email_address: '',
+                    password: '',
+                    verify_password: '',
+                },
+                author: 'author',
+                reviewer: 'reviewer'
+            },
+            methods: {
+                register() {
+                    if (this.user_data.password!== this.user_data.verify_password) {
+                        this.$buefy.toast.open({
+                                duration: 5000,
+                                message: `Passwords do not match!`,
+                                type: 'is-danger',
+                                pauseOnHover: true
+                            });
+                        console.log(this.user_data);
+                    }else {
+                        delete this.user_data.verify_password;
+                        axios.post('http://127.0.0.1:5000/register', this.user_data).then(() =>{
+                        this.$buefy.toast.open({
+                            duration: 1000,
+                            message: `User is Registered ! Redirecting to login page`,
+                            type: 'is-success',
+                            pauseOnHover: false
+                        });
+                        window.location.href = "http://127.0.0.1:5000/login";
+                        }).catch((err)=>  {
+                            this.$buefy.toast.open({
+                                duration: 5000,
+                                message: `Error: ${err}`,
+                                type: 'is-danger',
+                                pauseOnHover: true
+                            });
+                        });
+                    }
+                },
+                    
+            }
+        })
+    </script> 
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta value="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@5.8.55/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
+    <script src="https://unpkg.com/vue-multiselect@2.1.0"></script>
+    <link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+        <div id="vm" class="container">
+            {% include 'dynamic_html/navbar.html' %}
+                    <section>
+                        <div class="notification">
+                    <form method="post">
+                        <b-field label="First Name">
+                            <b-input type="text" name="first_name">
+                        </b-field>
+                        <b-field label="Middle Initial">
+                            <b-input type="text"  name="middle_initial" maxlength="1">
+                        </b-field>
+                        <b-field label="Last Name">
+                            <b-input type="text"  name="last_name">
+                        </b-field>
+                        <b-field label="Affiliation">
+                            <b-input type="text"  name="affiliation">
+                        </b-field>
+                        <b-field label="Department">
+                            <b-input type="text"  name="department">
+                        </b-field>
+                        <b-field label="Address">
+                            <b-input type="text"  name="address">
+                        </b-field>
+                        <b-field label="City">
+                            <b-input type="text"  name="city">
+                        </b-field>
+                        <b-field label="State">
+                            <b-input type="text"  name="state" maxlength="2">>
+                        </b-field>
+                        <b-field label="Zip Code">
+                            <b-input type="text"  name="zip_code">
+                        </b-field>
+                        <b-field label="Phone Number">
+                            <b-input type="text"  name="phone_number">
+                        </b-field>
+                        <b-field label="Email">
+                            <b-input type="email" name="email">
+                        </b-field>
+                        <b-field label="Password">
+                            <b-input type="password"  name="password">
+                        </b-field>
+                    <div class="block">
+                        <b-radio v-model="user.radio"
+                            name="name"
+                            native-value="default">
+                            Author
+                        </b-radio>
+                        <b-radio v-model="user.radio"
+                            name="name"
+                            native-value="default">
+                            Reviewer
+                        </b-radio>
+                    </div>
+                    <b-input type="submit" value="Register">
+                </form>
+            </div>
+                    </section>
+                <br><br>
+        </div>
+    <script src="https://unpkg.com/vue@2"></script>
+    <script src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
+    <script>
+        const vm = new Vue({
+            el: '#vm',
+            delimiters: ['[[', ']]'],
+            data: {
+                user_data:{ radio: "author"}
+            },
+        })
+    </script> 
+</body>
+</html> -->

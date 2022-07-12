@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Author Portal</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@5.8.55/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
+
+    <script src="https://unpkg.com/vue-multiselect@2.1.0"></script>
+    <link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">
+</head>
+<body>
+    <div id="vm" class="container">
+        {% include 'dynamic_html/navbar.html' %}
+        <template>
+            <section>
+                    <div class="notification">
+                        <div class="content">
+                            <h3>Publish Paper Form</h3>
+                            <form method="post">
+                                <template>
+                                    <section>
+                                        <b-field>
+                                            <b-input placeholder="File name"
+                                              name="file_name"
+                                              type="text"
+                                              required
+                                              maxlength="100">
+                                            </b-input>
+                                        </b-field>
+                                
+                                        <b-field>
+                                            <b-input placeholder="Title"
+                                              name="title"
+                                              type="text"
+                                              required
+                                              maxlength="200">
+                                            </b-input>
+                                        </b-field>
+                                
+                                        <b-field>
+                                            <b-input placeholder="Certification"
+                                              name="certification"
+                                              type="text"
+                                              required
+                                              maxlength="3">
+                                            </b-input>
+                                        </b-field>
+                                
+                                        <b-field>
+                                            <b-input type="textarea"
+                                                name="paper_contents"
+                                                required
+                                                placeholder="Paste paper here">
+                                            </b-input>
+                                        </b-field>
+
+                                        <b-field>
+                                            <b-input type="textarea"
+                                                name="other_description"
+                                                required
+                                                placeholder="Other description"
+                                                maxlength="50">
+                                            </b-input>
+                                        </b-field>
+
+                                        <b-field>
+                                            <multiselect v-model="topics" :options="options" :multiple="true"></multiselect>
+                                        </b-field>
+
+                                        <input type="hidden" name="topics" :value="topics">
+
+                                        <input type="submit">
+
+                                    </section>
+                                </template>
+                            </form>
+                        </div>
+                    </div>
+            </section>
+        </template>
+    </div>
+    <script src="https://unpkg.com/vue@2"></script>
+    <!-- Full bundle -->
+    <script src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
+    <script>
+        const vm = new Vue({
+            el: '#vm',
+            delimiters: ['[[', ']]'],
+            components: { Multiselect: window.VueMultiselect.default },
+            data: {
+                topics: [],
+                options: [
+                    'Analysis of Algorithms',
+                    'Applications',
+                    'Architecture',
+                    'Artificial Intelligence',
+                    'Computer Engineering',
+                    'Curriculum',
+                    'Data Structures',
+                    'Databases',
+                    'Distance Learning',
+                    'Distributed Systems',
+                    'Ethical Societal Issues',
+                    'First Year Computing',
+                    'Gender Issues',
+                    'Grant Writing',
+                    'Graphics Image Processing',
+                    'First Year Computing',
+                    'Human Computer Interaction',
+                    'Laboratory Environments',
+                    'Literacy',
+                    'Mathematics in Computing',
+                    'Multimedia',
+                    'Networking Data Communications',
+                    'Nonmajor Courses',
+                    'Object Oriented Issues',
+                    'Operating Systems',
+                    'Parallel Processing',
+                    'Pedagogy',
+                    'Programming Languages',
+                    'Research',
+                    'Security',
+                    'Software Engineering',
+                    'Systems Analysis and Design',
+                    'using_technology_in_the_classroom',
+                    'Web and Internet Programming',
+                    'Other'
+                ],
+            }
+        })
+    </script> 
+</body>
+</html>

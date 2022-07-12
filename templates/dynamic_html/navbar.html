@@ -1,0 +1,59 @@
+<b-navbar>
+    <template #brand>
+        <b-navbar-item href="/">
+            <img
+src="https://raw.githubusercontent.com/buefy/buefy/dev/static/img/buefy-logo.png"
+alt="Lightweight UI components for Vue.js based on Bulma"
+            >
+        </b-navbar-item>
+    </template>
+    <template #start>
+        <b-navbar-item href="#">
+        {% if session.get("id") %}
+            {% if session.get("account_type") == "author" %}
+                <a href="/author">
+                    Publish
+                </a>
+            {% endif %}
+            {% if session.get("account_type") == "reviewer" %}
+            <a href="/author">
+                Pending Reviews
+            </a>
+            {% endif %}
+        {% endif %}  
+        </b-navbar-item>
+        <b-navbar-item href="#">
+            {% if session.get("id") %}
+                    <a href="/papers">
+                        Graded Papers
+                    </a>
+            {% endif %}    
+        </b-navbar-item>
+        <b-navbar-item href="#">
+            {% if session.get("id") %}
+                    <a href="/profile">
+                        Profile
+                    </a>
+            {% endif %}    
+    </template>
+
+    <template #end>
+        <b-navbar-item tag="div">
+            {% if session.get("id") %}
+            <b-navbar-item href="#">
+                    <a class="button is-primary" href="/logout">
+                        <strong>Log out</strong>
+                    </a>
+                </div>
+            {% else %}
+            <b-navbar-item href="#">
+                    <a  href="/register">
+                     Register
+                    </a>
+            </b-navbar-item>
+            <b-navbar-item href="#">
+                <a href="/login">Log In</a>
+            </b-navbar-item>
+            {% endif %}
+    </template>
+</b-navbar>
