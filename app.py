@@ -67,6 +67,7 @@ def login():
             adminPs = "admin"
 
             #check if the user name authenticathe hard coded
+            print("before jumping to the admin route" + session.get("account_type") + " Log in as " + login_as)
             return redirect('/admin')
 
 
@@ -267,11 +268,12 @@ def reviewer():
     # author_data = db.engine.execute('SELECT first_name, last_name, email_address FROM author WHERE author_id = %s', pending_papers.author_id) # should be a joing but whatever
     return render_template('reviewer.html', rating_attributes=rating_attributes, pending_papers=pending_papers)
 
-@app.route("/administrator")
-def administrator():
-    if session.get("account_type") != 'administrator':
-        return redirect("/login")
+@app.route("/admin", methods= ['POST', 'GET'] )
+def admin():
     return render_template('admin.html')
+    # if session.get("account_type") != "admin":
+    #     return redirect("/login")
+    # else:
 
 @app.route('/profile',methods=['POST', 'GET'])
 def profile():

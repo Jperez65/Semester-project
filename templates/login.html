@@ -112,7 +112,7 @@
             delimiters: ['[[', ']]'],
             data: {
                 user_data:{
-                    account_type: 'reviewer',
+                    account_type: 'admin',
                     email_address: '',
                     password: '',
                 },
@@ -122,6 +122,7 @@
             },
             methods:{
                 logIn() {
+                    console.log("login method here")
                     console.log(this.user_data);
                     axios.post('http://127.0.0.1:5000/login', this.user_data).then(() =>{
                         window.location.reload();
