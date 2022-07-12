@@ -42,6 +42,7 @@ def login():
         password = request_data['password']
         login_as = request_data['account_type']
         print(request_data)
+        print("choosing an account type");
         if login_as == 'author' or login_as == 'reviewer':
             table_name = login_as
 
@@ -59,11 +60,18 @@ def login():
                 return redirect('/author')
             else:   
                 return redirect('/reviewer')
+        
+        elif login_as == 'admin':
+            # hardcode username and ps 
+            adminEmail = "admin@a.com"
+            adminPs = "admin"
+            print("log in as admin")
+            print("redirecting to admin route")
+            return redirect('/admin')
+            #return render_template('admin.html')
 
-        elif login_as == 'administrator':
-            # // TODO Impossible to authenticate if a user is an admin just give it to them
-            # // TODO Implement it
-            pass
+
+
         else:
             return render_template('login.html', error_message='Invalid account type to login with')
       
@@ -75,7 +83,7 @@ def login():
             return redirect("/" + session.get("account_type"))
 
 @app.route('/register', methods = ['POST', 'GET'])
-def register():
+def register(): 
    if request.method == 'POST':
         parser = reqparse.RequestParser()
         parser.add_argument('first_name', required=True, type=str,
@@ -260,11 +268,12 @@ def reviewer():
     # author_data = db.engine.execute('SELECT first_name, last_name, email_address FROM author WHERE author_id = %s', pending_papers.author_id) # should be a joing but whatever
     return render_template('reviewer.html', rating_attributes=rating_attributes, pending_papers=pending_papers)
 
-@app.route("/administrator")
-def administrator():
-    if not session.get("id") or session.get("account_type") != 'administrator':
-        return redirect("/login")
-    return render_template('administrator.html')
+@app.route("/admin", methods= ['POST', 'GET'] )
+def admin():
+    #in the route we render the template of the page
+    print("Rendering admin")
+    return render_template('admin.html')
+
 
 @app.route('/profile',methods=['POST', 'GET'])
 def profile():
@@ -323,6 +332,13 @@ def paper():
         # get the columns of the db table to auto generate table with flask 
         paper_attributes = db.engine.execute("SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'paper';").fetchall()
         return render_template('papers.html', graded_papers=graded_papers, paper_attributes = paper_attributes)
+    if session.get('account_type') == 'admin':
+        # do the queries for the required tables
+        # fetch reviews 
+        # fetch authors 
+        # fetch reviewers
+        # go to the admin page passing the queries results
+        return render_template('adminCPMS.html')
 
 if __name__=='__main__': #calling  main 
     app.debug=True #setting the debugging option for the application instance

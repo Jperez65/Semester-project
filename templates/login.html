@@ -28,7 +28,7 @@
                                     icon-left="pencil-outline"
                                     icon-right="menu-down" />
                             </template>
-                            <template v-else #trigger>
+                            <template v-else-if="user_data.account_type === reviewer" #trigger>
                                 <b-button
                                     label="Reviewer"
                                     type="is-primary"
@@ -60,7 +60,7 @@
                                     </div>
                                 </div>
                             </b-dropdown-item>
-                            <b-dropdown-item :value="Admin" aria-role="listitem">
+                            <b-dropdown-item :value="admin" aria-role="listitem">
                                 <div class="media">
                                     <b-icon class="media-left" icon="account-multiple"></b-icon>
                                     <div class="media-content">
@@ -100,6 +100,7 @@
                     </b-field>
             </form>
         </div>
+        <!-- Full bundle -->
             </section>
             <br><br>
     </div>
@@ -112,15 +113,17 @@
             delimiters: ['[[', ']]'],
             data: {
                 user_data:{
-                    account_type: 'reviewer',
+                    account_type: 'admin',
                     email_address: '',
                     password: '',
                 },
                 author: 'author',
-                reviewer: 'reviewer'
+                reviewer: 'reviewer',
+                admin: 'admin'
             },
             methods:{
                 logIn() {
+                    console.log("login method here")
                     console.log(this.user_data);
                     axios.post('http://127.0.0.1:5000/login', this.user_data).then(() =>{
                         window.location.reload();

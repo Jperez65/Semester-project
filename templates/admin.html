@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en"></html>
+<html>
+<head>
+  <!-- <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@5.8.55/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css"> -->
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Author Portal</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@5.8.55/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
+
+  <script src="https://unpkg.com/vue-multiselect@2.1.0"></script>
+  <link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">
+  <link rel="shortcut icon" href="#">
+
+  <title>Admin</title>
+</head>
+
+<body>
+  <div id="vm" class="container">
+      <!--{% include 'dynamic_html/navbar.html' %} -->
+      <template>
+        <div class="p-5 text-center bg-light">
+          <h1 class="mb-3">Maintenance Table</h1>
+        </div>
+
+        <table class="table table-hover table-bordered align-middle mb-0 bg-white">
+          <thead class="bg-white">
+            <tr class="text-uppercase">
+              <th>Author</th>
+              <th>Paper</th>
+              <th>Reviewer</th>
+              <th>Reviews</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="d-flex align-items-center">
+                  
+                  <div class="ms-3">
+                    <p class="fw-bold mb-1">John Doe</p>
+                    <p class="text-muted mb-0">john.doe@gmail.com</p>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <p class="fw-normal mb-1">Curriculum</p>
+              </td>
+              <td>Max Mill</td>
+              <td>
+                <span class="badge badge-success rounded-pill d-inline">5</span>
+              </td>
+              
+              <td>
+                <button type="button" class="btn btn-link btn-sm btn-rounded">
+                  Add
+                </button>
+                <button type="button" class="btn btn-link btn-sm btn-rounded">
+                  Edit
+                </button>
+                <button type="button" class="btn btn-link btn-sm btn-sm">
+                  Delete
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="d-flex align-items-center">
+                  
+                  <div class="ms-3">
+                    <p class="fw-bold mb-1">Nat William</p>
+                    <p class="text-muted mb-0">nat.william@gmail.com</p>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <p class="fw-normal mb-1">Algorithms</p>
+              </td>
+              <td>Pat Pete</td>
+              <td>
+                <span class="badge badge-warning rounded-pill d-inline">3</span>
+              </td>
+              
+              <td>
+                <button type="button" class="btn btn-link btn-sm btn-rounded">
+                  Add
+                </button>
+                <button type="button" class="btn btn-link btn-sm btn-rounded">
+                  Edit
+                </button>
+                <button type="button" class="btn btn-link btn-sm btn-sm">
+                  Delete
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="d-flex align-items-center">
+                  
+                  <div class="ms-3">
+                    <p class="fw-bold mb-1">Alex Ray</p>
+                    <p class="text-muted mb-0">alex.ray@gmail.com</p>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <p class="fw-normal mb-1">Artificial Intelligence</p>
+              </td>
+              <td>Rad Reed</td>
+              <td>
+                <span class="badge badge-success rounded-pill d-inline">5</span>
+              </td>
+              
+              <td>
+                <button type="button" class="btn btn-link btn-sm btn-rounded">
+                  Add
+                </button>
+                <button
+                        type="button"
+                        class="btn btn-link btn-rounded btn-sm fw-bold"
+                        data-mdb-ripple-color="dark"
+                        >
+                  Edit
+                </button>
+                <button type="button" class="btn btn-link btn-sm btn-sm">
+                  Delete
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="d-flex align-items-center">
+                  
+                  <div class="ms-3">
+                    <p class="fw-bold mb-1">Kate Hunington</p>
+                    <p class="text-muted mb-0">kate.hunington@gmail.com</p>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <p class="fw-normal mb-1">Grant Writing</p>
+              </td>
+              <td>Sam Sean</td>
+              <td>
+                <span class="badge badge-success rounded-pill d-inline">4</span>
+              </td>
+              
+              <td>
+                <button type="button" class="btn btn-link btn-sm btn-rounded">
+                  Add
+                </button>
+                <button
+                        type="button"
+                        class="btn btn-link btn-rounded btn-sm fw-bold"
+                        data-mdb-ripple-color="dark"
+                        >
+                  Edit
+                </button>
+                <button type="button" class="btn btn-link btn-sm btn-sm">
+                  Delete
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="d-flex align-items-center">
+                  
+                  <div class="ms-3">
+                    <p class="fw-bold mb-1">Bob Ray</p>
+                    <p class="text-muted mb-0">bob.ray@gmail.com</p>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <p class="fw-normal mb-1">Parallel Processing</p>
+              </td>
+              <td>Clay Cart</td>
+              <td>
+                <span class="badge badge-warning rounded-pill d-inline">2</span>
+              </td>
+              
+              <td>
+                <button type="button" class="btn btn-link btn-sm btn-rounded">
+                  Add
+                </button>
+                <button type="button" class="btn btn-link btn-sm btn-rounded">
+                  Edit
+                </button>
+                <button type="button" class="btn btn-link btn-sm btn-sm">
+                  Delete
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      
+      </template>
+  </div>
+
+  <script src="https://unpkg.com/vue@2"></script>
+  <!-- Full bundle -->
+  <script src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
+
+
+  <script src="https://unpkg.com/vue@2"></script>
+  <!-- Full bundle -->
+  <script src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
+  <script>
+      const vm = new Vue({
+          el: '#vm',
+          delimiters: ['[[', ']]'],
+          components: { Multiselect: window.VueMultiselect.default },
+          data: {
+            
+          }
+      })
+
+      console.log("Admin Redered")
+  </script>
+</body>
+
+</html>
