@@ -60,15 +60,22 @@ def login():
                 return redirect('/author')
             else:   
                 return redirect('/reviewer')
+        
+        elif login_as == 'admin' and password == '123':
+            render_template('admin.html')
 
         elif login_as == 'admin':
             #hardcode username and ps 
-            adminEmail = "admin@a.com"
-            adminPs = "admin"
+            #adminEmail = "admin@a.com"
+            #adminPs = "admin"
+
+            #session['id'] = "admin"
+            #session['account_type'] = login_as
 
             #check if the user name authenticathe hard coded
             print("before jumping to the admin route" + session.get("account_type") + " Log in as " + login_as)
-            return redirect('/admin')
+            print('here')
+            return render_template('administrator.html')
 
 
 
