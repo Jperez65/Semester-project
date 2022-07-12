@@ -28,7 +28,7 @@
                                     icon-left="pencil-outline"
                                     icon-right="menu-down" />
                             </template>
-                            <template v-else #trigger>
+                            <template v-else-if="user_data.account_type === reviewer" #trigger>
                                 <b-button
                                     label="Reviewer"
                                     type="is-primary"
@@ -60,7 +60,7 @@
                                     </div>
                                 </div>
                             </b-dropdown-item>
-                            <b-dropdown-item :value="Admin" aria-role="listitem">
+                            <b-dropdown-item :value="admin" aria-role="listitem">
                                 <div class="media">
                                     <b-icon class="media-left" icon="account-multiple"></b-icon>
                                     <div class="media-content">
@@ -117,7 +117,8 @@
                     password: '',
                 },
                 author: 'author',
-                reviewer: 'reviewer'
+                reviewer: 'reviewer',
+                admin: 'admin'
             },
             methods:{
                 logIn() {
